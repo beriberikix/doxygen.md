@@ -1,0 +1,26 @@
+{{!-- Docusaurus member.hbs: renders a single memberdef --}}
+{{#if briefdescription}}
+> {{{briefdescription}}}
+
+{{/if}}
+**Signature:**
+```cpp
+{{{definition}}}{{{argsstring}}}
+```
+{{#if param}}
+
+**Parameters:**
+
+| Name | Description |
+|------|-------------|
+{{#each param}}| `{{declname}}` | {{{#if description}}}{{{description}}}{{else}}—{{/if}} |
+{{/each}}
+{{/if}}
+{{#if returns}}
+
+**Returns:** {{{returns}}}
+{{/if}}
+{{#if detaileddescription}}
+
+{{{detaileddescription}}}
+{{/if}}

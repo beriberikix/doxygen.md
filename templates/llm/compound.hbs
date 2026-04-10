@@ -1,0 +1,21 @@
+{{!-- LLM compound.hbs: token-dense class/struct/namespace/group page (no frontmatter, no HTML anchors) --}}
+# {{name}}
+
+{{#if briefdescription}}
+{{{briefdescription}}}
+
+{{/if}}
+{{#if detaileddescription}}
+{{{detaileddescription}}}
+
+{{/if}}
+{{#each sectiondef}}
+## {{title}}
+
+{{#each memberdef}}
+### {{name}}
+
+{{> member}}
+
+{{/each}}
+{{/each}}

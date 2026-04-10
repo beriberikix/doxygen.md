@@ -1,0 +1,9 @@
+{{!-- LLM index.hbs: token-dense API index (no frontmatter, no HTML anchors) --}}
+# API Reference
+
+{{#each compounds}}
+## {{name}}
+
+{{#if briefdescription}}{{{briefdescription}}}{{/if}}
+
+{{/each}}
