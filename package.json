@@ -1,0 +1,23 @@
+{
+  "name": "doxygen.md",
+  "version": "1.0.0",
+  "description": "Reusable Handlebars templates for moxygen — converts Doxygen XML to Markdown (Docusaurus & LLM targets)",
+  "files": [
+    "templates"
+  ],
+  "keywords": [
+    "doxygen",
+    "moxygen",
+    "handlebars",
+    "markdown",
+    "docusaurus",
+    "llm",
+    "llms.txt",
+    "documentation"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beriberikix/doxygen.md.git"
+  }
+}
