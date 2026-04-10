@@ -1,0 +1,28 @@
+name: Docs
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Doxygen
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+          doxyfile-path: Doxyfile
+
+      - name: Generate Docusaurus MDX
+        uses: beriberikix/doxygen.md@main
+        with:
+          target: docusaurus
+          xml_path: doxygen/xml
+
+      - name: Generate llms.txt
+        uses: beriberikix/doxygen.md@main
+        with:
+          target: llm
+          xml_path: doxygen/xml
