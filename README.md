@@ -11,6 +11,83 @@ Two rendering targets are provided:
 
 ---
 
+## GitHub Action
+
+The easiest way to use these templates is via the published GitHub Action. Add a step to any workflow after Doxygen has already run:
+
+```yaml
+- name: Generate API docs (Docusaurus)
+  uses: beriberikix/doxygen.md@main
+  with:
+    target: docusaurus          # 'docusaurus' (default) or 'llm'
+    xml_path: doxygen/xml       # path to Doxygen XML output (default: doxygen/xml)
+    output: website/docs/api/%s.md  # omit to use the per-target default
+    classes: "true"             # pass --classes (docusaurus only, default: true)
+    groups: "true"              # pass --groups  (docusaurus only, default: true)
+    # moxygen_version: "1.0.0"  # pin a specific moxygen version (default: latest)
+```
+
+```yaml
+- name: Generate LLM context file
+  uses: beriberikix/doxygen.md@main
+  with:
+    target: llm
+    xml_path: doxygen/xml
+    output: public/llms.txt
+```
+
+### Inputs
+
+| Input | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `target` | no | `docusaurus` | Rendering target: `docusaurus` or `llm` |
+| `xml_path` | no | `doxygen/xml` | Path to Doxygen XML output directory |
+| `output` | no | *(target default)* | Output path pattern for `--output`. Docusaurus default: `./website/docs/api/%s.md`; LLM default: `./public/llms.txt` |
+| `classes` | no | `true` | Pass `--classes` to moxygen (docusaurus only) |
+| `groups` | no | `true` | Pass `--groups` to moxygen (docusaurus only) |
+| `moxygen_version` | no | `latest` | moxygen npm version to install |
+
+### Outputs
+
+| Output | Description |
+|--------|-------------|
+| `output_path` | The resolved output path that was passed to moxygen |
+
+### Full workflow example
+
+```yaml
+name: Docs
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Doxygen
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+          doxyfile-path: Doxyfile
+
+      - name: Generate Docusaurus MDX
+        uses: beriberikix/doxygen.md@main
+        with:
+          target: docusaurus
+          xml_path: doxygen/xml
+
+      - name: Generate llms.txt
+        uses: beriberikix/doxygen.md@main
+        with:
+          target: llm
+          xml_path: doxygen/xml
+```
+
+---
+
 ## Prerequisites
 
 | Tool | Version | Purpose |

@@ -1,0 +1,96 @@
+name: "doxygen.md"
+description: "Convert Doxygen XML to Markdown using moxygen and the doxygen.md templates"
+author: "beriberikix"
+
+branding:
+  icon: "book-open"
+  color: "blue"
+
+inputs:
+  target:
+    description: "Rendering target: 'docusaurus' or 'llm'"
+    required: true
+    default: "docusaurus"
+
+  xml_path:
+    description: "Path to the Doxygen XML output directory"
+    required: false
+    default: "doxygen/xml"
+
+  output:
+    description: >
+      Output path pattern passed to moxygen --output.
+      Defaults to './website/docs/api/%s.md' for the docusaurus target
+      and './public/llms.txt' for the llm target.
+    required: false
+    default: ""
+
+  classes:
+    description: "Pass --classes to moxygen (docusaurus target only)"
+    required: false
+    default: "true"
+
+  groups:
+    description: "Pass --groups to moxygen (docusaurus target only)"
+    required: false
+    default: "true"
+
+  moxygen_version:
+    description: "moxygen version to install (e.g. '1.0.0'). Defaults to latest."
+    required: false
+    default: "latest"
+
+outputs:
+  output_path:
+    description: "The resolved output path that was passed to moxygen"
+    value: ${{ steps.resolve.outputs.output_path }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20"
+
+    - name: Install moxygen
+      shell: bash
+      run: npm install -g moxygen@${{ inputs.moxygen_version }}
+
+    - name: Resolve output path
+      id: resolve
+      shell: bash
+      run: |
+        TARGET="${{ inputs.target }}"
+        OUTPUT="${{ inputs.output }}"
+        if [ -z "$OUTPUT" ]; then
+          if [ "$TARGET" = "llm" ]; then
+            OUTPUT="./public/llms.txt"
+          else
+            OUTPUT="./website/docs/api/%s.md"
+          fi
+        fi
+        echo "output_path=$OUTPUT" >> "$GITHUB_OUTPUT"
+
+    - name: Run moxygen
+      shell: bash
+      run: |
+        TARGET="${{ inputs.target }}"
+        OUTPUT="${{ steps.resolve.outputs.output_path }}"
+        XML_PATH="${{ inputs.xml_path }}"
+        TEMPLATES="${{ github.action_path }}/templates/$TARGET"
+
+        ARGS=(--templates "$TEMPLATES" --output "$OUTPUT")
+
+        if [ "$TARGET" = "docusaurus" ]; then
+          [ "${{ inputs.classes }}" = "true" ] && ARGS+=(--classes)
+          [ "${{ inputs.groups }}" = "true"  ] && ARGS+=(--groups)
+          ARGS+=(--anchors)
+        else
+          ARGS+=(--no-anchors)
+        fi
+
+        ARGS+=("$XML_PATH")
+
+        echo "Running: moxygen ${ARGS[*]}"
+        moxygen "${ARGS[@]}"
