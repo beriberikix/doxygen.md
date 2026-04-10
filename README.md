@@ -68,11 +68,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Doxygen
-        run: sudo apt-get install -y doxygen
-
       - name: Run Doxygen
-        run: doxygen Doxyfile
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+          doxyfile-path: Doxyfile
 
       - name: Generate Docusaurus MDX
         uses: beriberikix/doxygen.md@main
