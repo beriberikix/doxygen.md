@@ -51,12 +51,31 @@ npm install --save-dev moxygen
 
 ### 1. Reference this repository
 
-Add this repo as a **git submodule** or copy the `templates/` directory into your project:
+#### Option A — npm / GitHub install (recommended)
+
+Install directly from GitHub as an npm dev dependency — no registry account needed:
 
 ```bash
-# As a submodule (recommended)
+npm install --save-dev beriberikix/doxygen.md
+```
+
+This pins the templates to your `package-lock.json` and places them at
+`./node_modules/doxygen.md/templates/`.  To target a specific release, append
+the tag:
+
+```bash
+npm install --save-dev beriberikix/doxygen.md#v1.0.0
+```
+
+#### Option B — git submodule
+
+```bash
 git submodule add https://github.com/beriberikix/doxygen.md .doxygen-templates
 ```
+
+#### Option C — manual copy
+
+Copy the `templates/` directory into your project wherever you prefer.
 
 ### 2. Configure Doxygen
 
@@ -68,7 +87,23 @@ doxygen Doxyfile
 
 ### 3. Add `package.json` scripts
 
-Copy the relevant scripts into your project's `package.json`:
+Copy the relevant scripts into your project's `package.json`.
+
+**If you used the npm / GitHub install (Option A):**
+
+```jsonc
+{
+  "scripts": {
+    // Generate per-file Docusaurus MDX pages
+    "docs:api": "moxygen --templates ./node_modules/doxygen.md/templates/docusaurus --classes --groups --anchors --output ./website/docs/api/%s.md ./doxygen/xml",
+
+    // Generate a single token-dense LLM context file
+    "docs:llm": "moxygen --templates ./node_modules/doxygen.md/templates/llm --no-anchors --output ./public/llms.txt ./doxygen/xml"
+  }
+}
+```
+
+**If you used the git submodule (Option B):**
 
 ```jsonc
 {
@@ -82,7 +117,7 @@ Copy the relevant scripts into your project's `package.json`:
 }
 ```
 
-> **Tip:** If you copied `templates/` directly, replace `./.doxygen-templates/templates/` with the path where you placed it, e.g. `./doxygen-templates/`.
+> **Tip:** If you copied `templates/` directly (Option C), replace the template path with wherever you placed it, e.g. `./doxygen-templates/`.
 
 ### 4. Run
 
