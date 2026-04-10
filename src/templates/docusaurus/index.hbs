@@ -1,0 +1,11 @@
+---
+id: api-index
+title: "API Reference"
+---
+
+{{#if pages}}
+| Name | Kind | Description |
+|------|------|-------------|
+{{#each pages}}| [{{title}}]({{slug}}) | `{{kind}}` | {{description}} |
+{{/each}}
+{{/if}}

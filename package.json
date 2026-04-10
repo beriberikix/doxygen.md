@@ -1,0 +1,22 @@
+{
+  "name": "doxygen.md",
+  "version": "1.0.0",
+  "description": "Multi-target documentation router: Doxygen XML → Markdown for Docusaurus, MkDocs, generic, or LLM context",
+  "type": "module",
+  "bin": {
+    "dox2md": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc && rm -rf dist/templates && cp -r src/templates dist/templates",
+    "start": "node dist/cli.js"
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "handlebars": "^4.7.9",
+    "moxygen": "^2.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.0.0"
+  }
+}

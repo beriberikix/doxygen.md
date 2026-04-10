@@ -1,0 +1,8 @@
+# API Reference
+
+{{#if pages}}
+| Name | Kind | Description |
+|------|------|-------------|
+{{#each pages}}| [{{title}}]({{slug}}.md) | `{{kind}}` | {{description}} |
+{{/each}}
+{{/if}}
