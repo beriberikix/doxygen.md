@@ -1,0 +1,27 @@
+{{!-- Docusaurus compound.hbs: renders a class/struct/namespace/group page --}}
+---
+id: {{refid}}
+title: {{name}}
+sidebar_label: {{name}}
+---
+
+{{#if briefdescription}}
+{{{briefdescription}}}
+
+{{/if}}
+{{#if detaileddescription}}
+{{{detaileddescription}}}
+
+{{/if}}
+{{#each sectiondef}}
+## {{title}}
+
+{{#each memberdef}}
+### {{name}} {#{{refid}}}
+
+{{> member}}
+
+---
+
+{{/each}}
+{{/each}}

@@ -1,0 +1,15 @@
+{{!-- Docusaurus index.hbs: renders the API index page listing all compounds --}}
+---
+id: index
+title: API Reference
+sidebar_label: API Reference
+---
+
+This page lists all documented classes, structs, namespaces, and groups.
+
+{{#each compounds}}
+## [{{name}}]({{refid}})
+
+{{#if briefdescription}}{{{briefdescription}}}{{/if}}
+
+{{/each}}

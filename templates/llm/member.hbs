@@ -1,0 +1,16 @@
+{{!-- LLM member.hbs: token-dense rendering of a single memberdef (no HTML anchors) --}}
+{{#if briefdescription}}
+{{{briefdescription}}}
+{{/if}}
+Signature: `{{{definition}}}{{{argsstring}}}`
+{{#if param}}
+Params:
+{{#each param}}- `{{declname}}`{{#if description}}: {{{description}}}{{/if}}
+{{/each}}
+{{/if}}
+{{#if returns}}
+Returns: {{{returns}}}
+{{/if}}
+{{#if detaileddescription}}
+{{{detaileddescription}}}
+{{/if}}
